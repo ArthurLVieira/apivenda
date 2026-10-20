@@ -3,6 +3,7 @@ package com.project.apivenda.service.validator;
 import com.project.apivenda.entity.ItemVenda;
 import com.project.apivenda.entity.Produto;
 import com.project.apivenda.entity.Venda;
+import com.project.apivenda.entity.enums.StatusVendaEnum;
 import com.project.apivenda.exception.ErrorCode;
 import com.project.apivenda.exception.exceptions.BusinessException;
 import com.project.apivenda.repository.ItemVendaRepository;
@@ -17,6 +18,14 @@ import java.math.BigDecimal;
 public class ItemVendaValidator {
     private final ItemVendaRepository itemVendaRepository;
     private final ProdutoRepository produtoRepository;
+
+    public boolean validateExistProduto(Produto produto) {
+        if (itemVendaRepository.existsByProdutoIdAndVenda(produto.getId(), StatusVendaEnum.ABERTA)) {
+            throw new BusinessException(ErrorCode.PRODUCT_FOR_VENDA_ABERTA);
+        }
+
+        return itemVendaRepository.existsByProdutoId(produto.getId());
+    }
 
     public void validateItemVenda(ItemVenda entity) {
         Produto produto = produtoRepository.findById(entity.getProduto().getId()).orElseThrow(() ->

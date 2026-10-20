@@ -30,7 +30,11 @@ public class ProdutoValidator {
     }
 
     private boolean existsEntityByDescricaoAndCodigoBarra(Produto entity, Long id) {
-        Optional<Produto> aux = repository.findByDescricaoAndCodigoDeBarras(entity.getDescricao(), entity.getCodigoDeBarras());
+        Optional<Produto> aux = repository.findByDescricaoAndCodigoDeBarrasAndEmpresa(
+                entity.getDescricao(),
+                entity.getCodigoDeBarras(),
+                entity.getEmpresa()
+        );
 
         if (id == null) {
             return aux.isPresent();
@@ -40,7 +44,10 @@ public class ProdutoValidator {
     }
 
     private boolean existsEntityByCodigoDeBarras(Produto entity, Long id) {
-        Optional<Produto> aux = repository.findByCodigoDeBarras(entity.getCodigoDeBarras());
+        Optional<Produto> aux = repository.findByCodigoDeBarrasAndEmpresa(
+                entity.getCodigoDeBarras(),
+                entity.getEmpresa()
+        );
 
         if (id == null) {
             return aux.isPresent();
@@ -49,10 +56,11 @@ public class ProdutoValidator {
         return aux.isPresent() && !id.equals(aux.get().getId());
     }
 
-    public void updateData(Produto entity, Produto newEntity) {
-        entity.setDescricao(newEntity.getDescricao());
-        entity.setCodigoDeBarras(newEntity.getCodigoDeBarras());
-        entity.setPreco(newEntity.getPreco());
-        entity.setQuantidade(newEntity.getQuantidade());
+    public void updateData(Produto currentEntity, Produto newEntity) {
+        currentEntity.setDescricao(newEntity.getDescricao());
+        currentEntity.setCodigoDeBarras(newEntity.getCodigoDeBarras());
+        currentEntity.setPreco(newEntity.getPreco());
+        currentEntity.setQuantidade(newEntity.getQuantidade());
+        currentEntity.setUsuarioAtualizacao(newEntity.getUsuarioAtualizacao());
     }
 }

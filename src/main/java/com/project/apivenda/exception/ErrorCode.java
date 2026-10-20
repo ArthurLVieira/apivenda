@@ -27,6 +27,8 @@ public enum ErrorCode {
     PRODUCT_HAS_EXISTS("PIN-002", "Produto inválido, já cadastrado na base de dados."),
     PRODUCT_COGIDODEBARRAS_HAS_EXISTS("PIN-003", "Produto inválido, código de barras ja cadastrado na base de dados."),
     PRODUCT_QTD_INVALID("PIN-003", "Produto com estoque negativo e/ou zerado."),
+    PRODUCT_WITH_MOVEMENT("PIN-004", "Produto com movimentação"),
+    PRODUCT_FOR_VENDA_ABERTA("PIN-005", "Produto em venda consta em venda(s) em ABERTO"),
     VENDA_NOT_FOUND("PIN-001", "Venda não encontrado."),
     ITEM_VENDA_NOT_FOUND("PIN-001", "Item venda não  encontrado."),
     ITEM_VENDA_QTD_INVALID("PIN-002", "Quantidade para venda deve ser maior que zero."),

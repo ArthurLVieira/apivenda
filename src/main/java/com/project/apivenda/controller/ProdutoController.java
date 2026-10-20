@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Controller
-@RequestMapping("api/produto")
+@RestController
+@RequestMapping("/api/produto")
 @RequiredArgsConstructor
 public class ProdutoController {
     private final ProdutoService service;
@@ -42,7 +42,7 @@ public class ProdutoController {
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nome,asc") String sort) {
+            @RequestParam(defaultValue = "descricao,asc") String sort) {
 
         String[] sortParams = sort.split(",");
         Sort sortOrder = Sort.by(
@@ -94,11 +94,13 @@ public class ProdutoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteById(@PathVariable long id) {
+        service.deleteById(id);
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .success(true)
                 .message("produto deletado")
                 .traceId(UUID.randomUUID().toString())
                 .path("/api/produto/" + id)
+                .timestamp(LocalDateTime.now())
                 .build());
     }
 
