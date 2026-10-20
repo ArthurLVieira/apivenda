@@ -2,7 +2,6 @@ package com.project.apivenda.controller;
 
 import com.project.apivenda.dto.ApiResponse;
 import com.project.apivenda.dto.request.ProdutoRequest;
-import com.project.apivenda.dto.response.ClienteResponse;
 import com.project.apivenda.dto.response.ProdutoResponse;
 import com.project.apivenda.service.ProdutoService;
 import jakarta.validation.Valid;

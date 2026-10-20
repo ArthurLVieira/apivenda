@@ -2,13 +2,10 @@ package com.project.apivenda.service;
 
 import com.project.apivenda.dto.request.RegisterRequest;
 import com.project.apivenda.dto.response.RegisterResponse;
-import com.project.apivenda.entity.Empresa;
 import com.project.apivenda.entity.Role;
-import com.project.apivenda.entity.Usuario;
 import com.project.apivenda.mapper.EmpresaMapper;
 import com.project.apivenda.mapper.UsuarioMapper;
 import com.project.apivenda.repository.EmpresaRepository;
-import com.project.apivenda.repository.RoleRepository;
 import com.project.apivenda.repository.UsuarioRepository;
 import com.project.apivenda.service.validator.EmpresaValidator;
 import com.project.apivenda.service.validator.RoleValidator;

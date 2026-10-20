@@ -1,7 +1,6 @@
 package com.project.apivenda.service;
 
 import com.project.apivenda.dto.request.UsuarioRequest;
-import com.project.apivenda.dto.response.AuthResponse;
 import com.project.apivenda.dto.response.UsuarioResponse;
 import com.project.apivenda.entity.Empresa;
 import com.project.apivenda.entity.Role;

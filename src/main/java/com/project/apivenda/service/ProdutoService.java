@@ -2,7 +2,6 @@ package com.project.apivenda.service;
 
 import com.project.apivenda.dto.request.ProdutoRequest;
 import com.project.apivenda.dto.response.ProdutoResponse;
-import com.project.apivenda.entity.Cliente;
 import com.project.apivenda.entity.Produto;
 import com.project.apivenda.exception.ErrorCode;
 import com.project.apivenda.exception.exceptions.BusinessException;
@@ -55,10 +54,5 @@ public class ProdutoService {
         validator.validateEntity(entity, null);
         validator.updateData(entity, newEntity);
         return mapper.toDto(repository.save(entity));
-    }
-
-    public void deleteById(Long id) {
-        validator.existsEntityById(id);
-        repository.deleteById(id);
     }
 }

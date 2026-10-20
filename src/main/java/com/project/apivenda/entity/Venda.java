@@ -1,6 +1,5 @@
 package com.project.apivenda.entity;
 
-import com.project.apivenda.entity.enums.StatusVendaEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

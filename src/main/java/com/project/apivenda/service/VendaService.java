@@ -6,7 +6,6 @@ import com.project.apivenda.entity.Venda;
 import com.project.apivenda.exception.ErrorCode;
 import com.project.apivenda.exception.exceptions.BusinessException;
 import com.project.apivenda.mapper.VendaMapper;
-import com.project.apivenda.repository.ClienteRepository;
 import com.project.apivenda.repository.VendaRepository;
 import com.project.apivenda.service.validator.VendaValidator;
 import lombok.RequiredArgsConstructor;
