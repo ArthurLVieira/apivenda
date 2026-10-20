@@ -4,6 +4,7 @@ import com.project.apivenda.entity.Cliente;
 import com.project.apivenda.exception.ErrorCode;
 import com.project.apivenda.exception.exceptions.BusinessException;
 import com.project.apivenda.repository.ClienteRepository;
+import com.project.apivenda.repository.VendaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClienteValidator {
     private final ClienteRepository repository;
+    private final VendaRepository vendaRepository;
 
     public Cliente validateEntityId(Long id) {
         return repository.findById(id).orElseThrow(() ->
@@ -29,7 +31,7 @@ public class ClienteValidator {
     }
 
     private boolean existsByCpf(Cliente entity, Long id) {
-        Optional<Cliente> aux = repository.findByCpf(entity.getCpf());
+        Optional<Cliente> aux = repository.findByCpfAndEmpresa(entity.getCpf(), entity.getEmpresa());
 
         if (id == null) {
             return aux.isPresent();
@@ -39,9 +41,10 @@ public class ClienteValidator {
     }
 
     private Boolean existsByNomeCompletoAndCpf(Cliente entity, Long id) {
-        Optional<Cliente> aux = repository.findByNomeCompletoAndCpf(
+        Optional<Cliente> aux = repository.findByNomeCompletoAndCpfAndEmpresa(
                 entity.getNomeCompleto(),
-                entity.getCpf());
+                entity.getCpf(),
+                entity.getEmpresa());
 
         if (id == null) {
             return aux.isPresent();
@@ -50,9 +53,14 @@ public class ClienteValidator {
         return !id.equals(aux.get().getId()) && aux.isPresent();
     }
 
-    public void updateData(Cliente newEntity, Cliente entity) {
-        entity.setNomeCompleto(newEntity.getNomeCompleto());
-        entity.setCpf(newEntity.getCpf());
-        entity.setDataNascimento(newEntity.getDataNascimento());
+    public void updateData(Cliente newEntity, Cliente currentEntity) {
+        currentEntity.setNomeCompleto(newEntity.getNomeCompleto());
+        currentEntity.setCpf(newEntity.getCpf());
+        currentEntity.setDataNascimento(newEntity.getDataNascimento());
+        currentEntity.setUsuarioAtualizacao(newEntity.getUsuarioAtualizacao());
+
+    }
+
+    public void validateCanDelete(Cliente cliente) {
     }
 }

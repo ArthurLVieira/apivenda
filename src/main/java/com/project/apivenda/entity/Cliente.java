@@ -1,10 +1,7 @@
 package com.project.apivenda.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,11 +9,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "cliente", schema = "public")
@@ -37,6 +37,24 @@ public class Cliente implements Serializable {
     private String cpf;
 
     private LocalDate dataNascimento;
+
+    @Column(name = "status", nullable = false)
+    private boolean status = true;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Venda> vendas;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_cadastro_id")
+    private Usuario usuarioCadastro;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_atualizacao_id")
+    private Usuario usuarioAtualizacao;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empresa_id")
+    private Empresa empresa;
 
     @CreatedDate
     @Column(name = "data_cadastro", nullable = false)

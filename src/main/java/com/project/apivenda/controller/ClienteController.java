@@ -11,15 +11,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Controller
-@RequestMapping(name = "api/cliente")
+@RestController
+@RequestMapping("api/cliente")
 @RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService service;
@@ -42,7 +40,7 @@ public class ClienteController {
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nome,asc") String sort) {
+            @RequestParam(defaultValue = "nomeCompleto,asc") String sort) {
 
         String[] sortParams = sort.split(",");
         Sort sortOrder = Sort.by(
@@ -85,7 +83,7 @@ public class ClienteController {
         return ResponseEntity.ok(ApiResponse.<ClienteResponse>builder()
                 .success(true)
                         .data(service.update(request, id))
-                .message("Registro excluido com secesso")
+                .message("Registro alterado com secesso")
                 .traceId(UUID.randomUUID().toString())
                 .timestamp(LocalDateTime.now())
                 .build()
@@ -94,6 +92,7 @@ public class ClienteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteById(@PathVariable Long id) {
+        service.deleteById(id);
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .success(true)
                 .message("Registro excluido com secesso")

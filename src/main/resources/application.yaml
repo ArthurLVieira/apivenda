@@ -1,5 +1,27 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: apivenda
   profiles:
     active: dev
+
+app:
+  security:
+    jwt:
+      issuer: apivenda
+      secret: 8a815f8e69e08645781f0f4579fe58750d3551b238385bb1e558b9d46cd33831
+      access-token: 3600000
+      refresh-token: 604800000
+    cors:
+      allowed-origins: http://localhost:5173,http://localhost:3000,http://localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
