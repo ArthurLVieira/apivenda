@@ -35,7 +35,8 @@ public enum ErrorCode {
     ITEM_VENDA_PRECO_VENDA_INVALID("PIN-003", "Preço de venda deve ser maior que zero e/ou campo preenchido."),
     ENTERPRISE_INVALID("ENT-001", "Empresa inválida, já cadastrada na base de dados."),
     ENTERPRISE_CPFCNPJ_EXISTING("ENT-001", "CPF e/ou CNPJ já cadastrado para outra empresa."),
-    STATUS_VENDA_ERROR("STV-001", "Status venda não encontrado e/ou inválido."),;
+    STATUS_VENDA_ERROR("STV-001", "Status venda não encontrado e/ou inválido."),
+    ENTRADA_NOT_FOUND("ENT-002", "Entrada não encontrada."),;
 
     private final String code;
     private final String message;

@@ -19,11 +19,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     """)
     Page<Cliente> search(String search, Empresa empresa, Pageable pageable);
 
-    @Query("""
-        select c from Cliente c
-        where c.empresa = :empresa
-    """)
-    Page<Cliente> findAll(Empresa empresa, Pageable pageable);
+    Page<Cliente> findAllByEmpresa(Empresa empresa, Pageable pageable);
 
     Optional<Cliente> findByNomeCompletoAndCpfAndEmpresa(String nomeCompleto, String cpf, Empresa empresa);
 

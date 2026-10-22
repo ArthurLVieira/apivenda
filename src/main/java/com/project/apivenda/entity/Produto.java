@@ -46,6 +46,9 @@ public class Produto implements Serializable {
     @OneToMany(mappedBy = "produto")
     private List<ItemVenda> itensVenda;
 
+    @OneToMany(mappedBy = "produto")
+    private List<ItemEntrada> itensEntrada;
+
     @Column(nullable = false, name = "status")
     private Boolean status = true;
 

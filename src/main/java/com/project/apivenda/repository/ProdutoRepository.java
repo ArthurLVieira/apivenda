@@ -17,7 +17,11 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
         and (p.descricao ILIKE CONCAT('%', :search, '%')
         or p.codigoDeBarras ILIKE CONCAT('%', :search, '%'))
     """)
-    Page<Produto> search(String search, Empresa empresa, Pageable pageable);
+    Page<Produto> search(
+            String search,
+            Empresa empresa,
+            Pageable pageable
+    );
 
     Page<Produto> findByEmpresa(Empresa empresa, Pageable pageable);
 

@@ -54,7 +54,7 @@ public class ClienteService {
                         pageable
                 );
             } else {
-                clientes = clienteRepository.findAll(getEmpresa(), pageable);
+                clientes = clienteRepository.findAllByEmpresa(getEmpresa(), pageable);
             }
         }catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_ERROR);
