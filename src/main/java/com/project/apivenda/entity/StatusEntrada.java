@@ -1,6 +1,6 @@
 package com.project.apivenda.entity;
 
-import com.project.apivenda.entity.enums.StatusVendaEnum;
+import com.project.apivenda.entity.enums.StatusEntradaEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,9 +29,9 @@ public class StatusEntrada implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private StatusVendaEnum status;
+    private StatusEntradaEnum status;
 
-    public StatusEntrada(StatusVendaEnum status) {
+    public StatusEntrada(StatusEntradaEnum status) {
         this.status = status;
     }
 }
