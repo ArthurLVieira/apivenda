@@ -35,6 +35,10 @@ public class Entrada implements Serializable {
     @Column(name = "numero", nullable = false, length = 100)
     private Number numero;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id")
+    private StatusEntrada status;
+
     @Column(name = "fornecedor_id")
     private Cliente fornecedor;
 

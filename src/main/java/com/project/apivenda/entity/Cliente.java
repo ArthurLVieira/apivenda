@@ -70,4 +70,13 @@ public class Cliente implements Serializable {
     @LastModifiedDate
     @Column(name = "data_atualizacao")
     private LocalDate dataAtualizacao;
+
+    public Cliente(String nomeRazao, String cpfCnpj, Empresa empresa, Usuario usuario) {
+        this.nomeRazao = nomeRazao;
+        this.cpfCnpj = cpfCnpj;
+        this.empresa = empresa;
+        this.usuarioCadastro = usuario;
+        this.usuarioAtualizacao = usuario;
+        this.fornecedor = true;
+    }
 }
