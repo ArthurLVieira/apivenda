@@ -1,9 +1,13 @@
 package com.project.apivenda.config;
 
 import com.project.apivenda.entity.Role;
+import com.project.apivenda.entity.StatusEntrada;
+import com.project.apivenda.entity.enums.StatusEntradaEnum;
 import com.project.apivenda.entity.enums.StatusVendaEnum;
 import com.project.apivenda.repository.RoleRepository;
+import com.project.apivenda.repository.StatusEntradaRepository;
 import com.project.apivenda.repository.StatusVendaRepository;
+import com.project.apivenda.service.validator.StatusEntradaValidator;
 import com.project.apivenda.service.validator.StatusVendaValidator;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -19,11 +23,14 @@ public class InitializerConfig implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final StatusVendaRepository statusVendaRepository;
     private final StatusVendaValidator statusVendaValidator;
+    private final StatusEntradaRepository statusEntradaRepository;
+    private final StatusEntradaValidator statusEntradaValidator;
 
     @Override
     public void run(String @NonNull ... args) throws Exception {
         initializeRoles();
         initializeStatusVenda();
+        initializeStatusEntrada();
     }
 
     private void initializeRoles() {
@@ -39,5 +46,14 @@ public class InitializerConfig implements CommandLineRunner {
         statusVendaRepository.save(statusVendaValidator.validateInitializerEntityByStatus(StatusVendaEnum.ABERTA));
         statusVendaRepository.save(statusVendaValidator.validateInitializerEntityByStatus(StatusVendaEnum.FATURADA));
         statusVendaRepository.save(statusVendaValidator.validateInitializerEntityByStatus(StatusVendaEnum.CANCELADA));
+    }
+
+    private void initializeStatusEntrada() {
+        if  (statusEntradaRepository.count() != 0) {return;}
+
+        statusEntradaRepository.save(statusEntradaValidator.validateInitializerEntityByStatus(StatusEntradaEnum.AUTORIZADA));
+        statusEntradaRepository.save(statusEntradaValidator.validateInitializerEntityByStatus(StatusEntradaEnum.CANCELADA));
+        statusEntradaRepository.save(statusEntradaValidator.validateInitializerEntityByStatus(StatusEntradaEnum.PENDENTE));
+
     }
 }

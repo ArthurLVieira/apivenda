@@ -30,13 +30,20 @@ public class Cliente implements Serializable {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "nome_completo",  nullable = false)
-    private String nomeCompleto;
+    @Column(name = "nome_razao",  nullable = false)
+    private String nomeRazao;
 
-    @Column(nullable = false)
-    private String cpf;
+    @Column(name = "cpf_cnpj", nullable = false, unique = true)
+    private String cpfCnpj;
 
-    private LocalDate dataNascimento;
+    @Column(name = "nome_fantazia")
+    private String nomeFantazia;
+
+    @Column(name = "data_nascimento_criacao")
+    private LocalDate dataNascimentoCriacao;
+
+    @Column(name = "fornecedor")
+    private Boolean fornecedor = false;
 
     @Column(name = "status", nullable = false)
     private boolean status = true;
