@@ -14,7 +14,7 @@ public interface EntradaMapper {
 
     @AfterMapping
     default void afterMapping(Entrada entity, @MappingTarget EntradaResponse dto) {
-        entity.getItensEntrada().forEach(item -> {
+        entity.getItens().forEach(item -> {
             item.setId(entity.getId());
         });
 

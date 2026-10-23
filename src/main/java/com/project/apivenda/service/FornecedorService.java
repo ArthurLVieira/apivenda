@@ -7,6 +7,7 @@ import com.project.apivenda.exception.ErrorCode;
 import com.project.apivenda.exception.exceptions.BusinessException;
 import com.project.apivenda.repository.ClienteRepository;
 import com.project.apivenda.repository.UsuarioRepository;
+import com.project.apivenda.service.validator.ClienteValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class FornecedorService {
 
     private final ClienteRepository clienteRepository;
+    private final ClienteValidator clienteValidator;
     private UsuarioRepository usuarioRepository;
 
     private Usuario getUsuario() {
@@ -32,12 +34,30 @@ public class FornecedorService {
     }
 
     public Cliente insertOrUpdate(Long id, String nomeRazao, String cpfCnpj) {
-        Optional<Cliente> currentEntity =  clienteRepository.findById(id);
+        Optional<Cliente> entity =  clienteRepository.findById(id);
 
-        if (currentEntity.isPresent()) {
-            return clienteRepository.save(new Cliente(nomeRazao, cpfCnpj, getEmpresa(), getUsuario()));
+        if (entity.isEmpty()) {
+            entity = clienteRepository.findByCpfCnpjAndEmpresa(cpfCnpj, getEmpresa());
+
+            if (entity.isEmpty()) {
+                return clienteRepository.save(new Cliente(nomeRazao, cpfCnpj, getEmpresa(), getUsuario()));
+            }
+
+            var newEntity = new Cliente(nomeRazao, cpfCnpj, getEmpresa(), getUsuario());
+            var currentEntity = entity.get();
+
+            clienteValidator.validateEntity(newEntity, id);
+            clienteValidator.updateData(newEntity, currentEntity);
+
+            return clienteRepository.save(currentEntity);
         }
 
+        var newEntity = new Cliente(nomeRazao, cpfCnpj, getEmpresa(), getUsuario());
+        var currentEntity = entity.get();
 
+        clienteValidator.validateEntity(newEntity, id);
+        clienteValidator.updateData(newEntity, currentEntity);
+
+        return clienteRepository.save(currentEntity);
     }
 }

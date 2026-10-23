@@ -2,6 +2,7 @@ package com.project.apivenda.service;
 
 import com.project.apivenda.dto.request.EntradaRequest;
 import com.project.apivenda.dto.response.EntradaResponse;
+import com.project.apivenda.entity.Cliente;
 import com.project.apivenda.entity.Empresa;
 import com.project.apivenda.entity.Entrada;
 import com.project.apivenda.entity.Usuario;
@@ -27,6 +28,7 @@ public class EntradaService {
     private final EntradaValidator entradaValidator;
     private final EntradaMapper mapper;
     private final UsuarioRepository usuarioRepository;
+    private final FornecedorService fornecedorService;
 
     private Usuario getUsuario() {
         String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
@@ -63,7 +65,25 @@ public class EntradaService {
     }
 
     public EntradaResponse insert (EntradaRequest dto) {
-        var entity = mapper.toEntity(dto);
+        Cliente fornecedor = fornecedorService.insertOrUpdate(
+                dto.getFornecedorId(),
+                dto.getNomeRazao(),
+                dto.getCpfCnpj()
+        );
 
+        var entity = mapper.toEntity(dto);
+        entity.setFornecedor(fornecedor);
+        entity.setEmpresa(fornecedor.getEmpresa());
+        entity.setUsuarioCadastro(getUsuario());
+        entity.setUsuarioAtualizacao(getUsuario());
+
+        entity.getItens().forEach(item -> {
+            item.setEmpresa(getEmpresa());
+            item.setUsuarioCadastro(getUsuario());
+            item.setUsuarioAtualizacao(getUsuario());
+        });
+
+        entity = entradaRepository.save(entity);
+        return mapper.toDto(entity);
     }
 }

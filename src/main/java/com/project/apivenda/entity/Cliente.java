@@ -51,6 +51,9 @@ public class Cliente implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Venda> vendas;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Entrada> entradas;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_cadastro_id")
     private Usuario usuarioCadastro;
