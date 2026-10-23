@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EntradaResponse {
     private Long id;
-    private String numero;
+    private Number numero;
     private Long fornecedorId;
     private String nomeRazao;
     private String cpfCnpj;

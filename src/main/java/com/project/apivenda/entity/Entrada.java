@@ -33,7 +33,7 @@ public class Entrada implements Serializable {
     private Long id;
 
     @Column(name = "numero", nullable = false, length = 100)
-    private String numero;
+    private Number numero;
 
     @Column(name = "fornecedor_id")
     private Cliente fornecedor;
