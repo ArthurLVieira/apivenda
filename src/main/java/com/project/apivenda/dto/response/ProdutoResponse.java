@@ -12,8 +12,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProdutoResponse {
+    private Long id;
     private String descricao;
     private String codigoDeBarras;
-    private BigDecimal valor;
+    private BigDecimal preco;
     private BigDecimal quantidade;
 }

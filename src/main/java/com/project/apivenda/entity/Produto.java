@@ -46,6 +46,24 @@ public class Produto implements Serializable {
     @OneToMany(mappedBy = "produto")
     private List<ItemVenda> itensVenda;
 
+    @OneToMany(mappedBy = "produto")
+    private List<ItemEntrada> itensEntrada;
+
+    @Column(nullable = false, name = "status")
+    private Boolean status = true;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_cadastro_id")
+    private Usuario usuarioCadastro;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_atualizacao_id")
+    private Usuario usuarioAtualizacao;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empresa_id")
+    private Empresa empresa;
+
     @CreatedDate
     @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
