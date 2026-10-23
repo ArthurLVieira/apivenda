@@ -1,5 +1,6 @@
 package com.project.apivenda.service;
 
+import com.project.apivenda.dto.request.EntradaRequest;
 import com.project.apivenda.dto.response.EntradaResponse;
 import com.project.apivenda.entity.Empresa;
 import com.project.apivenda.entity.Entrada;
@@ -59,5 +60,10 @@ public class EntradaService {
         }
 
         return entradas.map(mapper::toDto);
+    }
+
+    public EntradaResponse insert (EntradaRequest dto) {
+        var entity = mapper.toEntity(dto);
+
     }
 }
