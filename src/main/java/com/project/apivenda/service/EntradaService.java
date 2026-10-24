@@ -28,7 +28,7 @@ public class EntradaService {
     private final EntradaValidator entradaValidator;
     private final EntradaMapper mapper;
     private final UsuarioRepository usuarioRepository;
-    private final FornecedorService fornecedorService;
+    private final ClienteService clienteService;
 
     private Usuario getUsuario() {
         String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
@@ -65,9 +65,10 @@ public class EntradaService {
     }
 
     public EntradaResponse insert (EntradaRequest dto) {
-        Cliente fornecedor = fornecedorService.insertOrUpdate(
+        Cliente fornecedor = clienteService.insertOrUpdate(
                 dto.getFornecedorId(),
                 dto.getNomeRazao(),
+                true,
                 dto.getCpfCnpj()
         );
 
