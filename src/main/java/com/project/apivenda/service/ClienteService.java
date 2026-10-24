@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,8 @@ public class ClienteService {
 
     public Page<ClienteResponse> search(
             Pageable pageable,
-            String search
+            String search,
+            Boolean fornecedor
     ) {
         Page<Cliente> clientes;
         try {
@@ -51,12 +53,16 @@ public class ClienteService {
                 clientes = clienteRepository.search(
                         search.trim(),
                         getEmpresa(),
+                        fornecedor,
                         pageable
                 );
             } else {
-                clientes = clienteRepository.findAllByEmpresa(getEmpresa(), pageable);
+                clientes = clienteRepository.findAllByEmpresa(
+                        getEmpresa(),
+                        fornecedor,
+                        pageable);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new BusinessException(ErrorCode.INTERNAL_ERROR);
         }
 
@@ -88,11 +94,45 @@ public class ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    ClienteResponse updateStatus(Long id) {
+    public Cliente insertOrUpdate(Long id, String nomeRazao, Boolean fornecedor, String cpfCnpj) {
+        Optional<Cliente> entity =  clienteRepository.findById(id);
+
+        if (entity.isEmpty()) {
+            entity = clienteRepository.findByCpfCnpjAndEmpresa(cpfCnpj, getEmpresa());
+
+            if (entity.isEmpty()) {
+                return clienteRepository.save(new Cliente(nomeRazao, cpfCnpj, fornecedor, getEmpresa(), getUsuario()));
+            }
+
+            var newEntity = new Cliente(nomeRazao, cpfCnpj, fornecedor, getEmpresa(), getUsuario());
+            var currentEntity = entity.get();
+
+            validator.validateEntity(newEntity, id);
+            validator.updateData(newEntity, currentEntity);
+
+            return clienteRepository.save(currentEntity);
+        }
+
+        var newEntity = new Cliente(nomeRazao, cpfCnpj, fornecedor, getEmpresa(), getUsuario());
+        var currentEntity = entity.get();
+
+        validator.validateEntity(newEntity, id);
+        validator.updateData(newEntity, currentEntity);
+
+        return clienteRepository.save(currentEntity);
+    }
+
+    public ClienteResponse switchStatus(Long id) {
         var entity =  validator.validateEntityId(id);
         entity.setStatus(!entity.isStatus());
         entity.setUsuarioAtualizacao(getUsuario());
 
+        return mapper.toDto(clienteRepository.save(entity));
+    }
+
+    public ClienteResponse switchFornecedor(Long id) {
+        var entity = validator.validateEntityId(id);
+        entity.setFornecedor(!entity.getFornecedor());
         return mapper.toDto(clienteRepository.save(entity));
     }
 

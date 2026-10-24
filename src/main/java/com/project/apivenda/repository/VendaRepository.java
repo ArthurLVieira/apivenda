@@ -16,8 +16,8 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
         LEFT JOIN FETCH v.status s
         LEFT JOIN FETCH v.cliente c
         WHERE (v.status.id IN :statusIds
-                AND LOWER(c.nomeCompleto) LIKE LOWER(CONCAT('%', :search, '%'))
-                OR LOWER(c.cpf) LIKE LOWER(CONCAT('%', :search, '%')))
+                AND LOWER(c.nomeRazao) LIKE LOWER(CONCAT('%', :search, '%'))
+                OR LOWER(c.cpfCnpj) LIKE LOWER(CONCAT('%', :search, '%')))
     """)
     Page<Venda> searchByStatusIds(
             @Param("search") String search,
@@ -51,8 +51,8 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
         SELECT v FROM Venda v
         LEFT JOIN FETCH v.status s
         LEFT JOIN FETCH v.cliente c
-        WHERE (LOWER(c.nomeCompleto) LIKE LOWER(CONCAT('%', :search, '%'))
-            OR LOWER(c.cpf) LIKE LOWER(CONCAT('%', :search, '%')))
+        WHERE (LOWER(c.nomeRazao) LIKE LOWER(CONCAT('%', :search, '%'))
+            OR LOWER(c.cpfCnpj) LIKE LOWER(CONCAT('%', :search, '%')))
     """)
     Page<Venda> search(
             @Param("search") String search,

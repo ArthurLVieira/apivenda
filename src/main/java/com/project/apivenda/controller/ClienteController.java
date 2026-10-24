@@ -14,10 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/cliente")
+@RequestMapping("/api/cliente")
 @RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService service;
@@ -35,9 +36,14 @@ public class ClienteController {
         );
     }
 
+    private static final Set<String> SORTABLE_FIELDS = Set.of(
+            "id", "nomeRazao", "cpfCnpj", "dataNascimentoCriacao", "status", "fornecedor"
+    );
+
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ClienteResponse>>> search(
             @RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "false") boolean fornecedor,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "nomeCompleto,asc") String sort) {
@@ -53,7 +59,7 @@ public class ClienteController {
 
         return ResponseEntity.ok(ApiResponse.<Page<ClienteResponse>>builder()
                 .success(true)
-                .data(service.search(pageable, search))
+                .data(service.search(pageable, search, fornecedor))
                 .message("Pesquisa realizada com sucesso")
                 .traceId(UUID.randomUUID().toString())
                 .path("/api/cliente")
@@ -68,7 +74,7 @@ public class ClienteController {
         return ResponseEntity.ok(ApiResponse.<ClienteResponse>builder()
                 .success(true)
                 .data(service.insert(request))
-                .message("Cadastro realizado com sucesso")
+                .message("Registro cadastrado com sucesso")
                 .traceId(UUID.randomUUID().toString())
                 .path("/api/cliente")
                 .timestamp(LocalDateTime.now())
@@ -82,9 +88,10 @@ public class ClienteController {
     ) {
         return ResponseEntity.ok(ApiResponse.<ClienteResponse>builder()
                 .success(true)
-                        .data(service.update(request, id))
-                .message("Registro alterado com secesso")
+                .data(service.update(request, id))
+                .message("Registro atualizado com secesso")
                 .traceId(UUID.randomUUID().toString())
+                .path("/api/cliente" + id)
                 .timestamp(LocalDateTime.now())
                 .build()
         );
@@ -97,8 +104,41 @@ public class ClienteController {
                 .success(true)
                 .message("Registro excluido com secesso")
                 .traceId(UUID.randomUUID().toString())
+                        .path("/api/cliente/" + id)
                 .timestamp(LocalDateTime.now())
                 .build()
+        );
+    }
+
+    @PatchMapping("/switch/fornecedor/{id}")
+    public ResponseEntity<ApiResponse<ClienteResponse>> changeFornecedor(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(
+                ApiResponse.<ClienteResponse>builder()
+                        .success(true)
+                        .data(service.switchFornecedor(id))
+                        .message("Registro atualizado com sucesso")
+                        .traceId(UUID.randomUUID().toString())
+                        .path("/api/cliente/switch/fornecedor/" + id)
+                        .timestamp(LocalDateTime.now())
+                        .build()
+        );
+    }
+
+    @PatchMapping("/switch/status/{id}")
+    public ResponseEntity<ApiResponse<ClienteResponse>> changeStatus(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(
+                ApiResponse.<ClienteResponse>builder()
+                        .success(true)
+                        .data(service.switchStatus(id))
+                        .message("Registro atualizado com sucesso")
+                        .traceId(UUID.randomUUID().toString())
+                        .path("/api/cliente/switch/status/" + id)
+                        .timestamp(LocalDateTime.now())
+                        .build()
         );
     }
 

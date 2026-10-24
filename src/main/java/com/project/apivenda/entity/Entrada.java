@@ -39,7 +39,8 @@ public class Entrada implements Serializable {
     @JoinColumn(name = "status_id")
     private StatusEntrada status;
 
-    @Column(name = "fornecedor_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "fornecedor_id")
     private Cliente fornecedor;
 
     @Column(name = "nome_razao")
@@ -49,7 +50,7 @@ public class Entrada implements Serializable {
     private String cpfCnpj;
 
     @OneToMany(mappedBy = "entrada", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ItemEntrada> itensEntrada;
+    private List<ItemEntrada> itens;
 
     @Column(precision = 15, scale = 2)
     private BigDecimal total;

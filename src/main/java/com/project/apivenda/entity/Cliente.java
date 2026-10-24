@@ -51,6 +51,9 @@ public class Cliente implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Venda> vendas;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Entrada> entradas;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_cadastro_id")
     private Usuario usuarioCadastro;
@@ -71,12 +74,12 @@ public class Cliente implements Serializable {
     @Column(name = "data_atualizacao")
     private LocalDate dataAtualizacao;
 
-    public Cliente(String nomeRazao, String cpfCnpj, Empresa empresa, Usuario usuario) {
+    public Cliente(String nomeRazao, String cpfCnpj, Boolean fornecedor, Empresa empresa, Usuario usuario) {
         this.nomeRazao = nomeRazao;
         this.cpfCnpj = cpfCnpj;
         this.empresa = empresa;
         this.usuarioCadastro = usuario;
         this.usuarioAtualizacao = usuario;
-        this.fornecedor = true;
+        this.fornecedor = fornecedor;
     }
 }

@@ -22,16 +22,16 @@ public class ClienteValidator {
     }
 
     public void validateEntity(Cliente entity, Long id) {
-        if (existsByNomeCompletoAndCpf(entity, id)) {
+        if (existsByNomeRazaoAndCpfCnpj(entity, id)) {
             throw new BusinessException(ErrorCode.CLIENT_HAS_EXISTS);
         }
-        if (existsByCpf(entity, id)) {
+        if (existsByCpfCnpj(entity, id)) {
             throw new BusinessException(ErrorCode.CLIENT_CPF_HAS_EXISTS);
         }
     }
 
-    private boolean existsByCpf(Cliente entity, Long id) {
-        Optional<Cliente> aux = repository.findByCpfAndEmpresa(entity.getCpf(), entity.getEmpresa());
+    private boolean existsByCpfCnpj(Cliente entity, Long id) {
+        Optional<Cliente> aux = repository.findByCpfCnpjAndEmpresa(entity.getCpfCnpj(), entity.getEmpresa());
 
         if (id == null) {
             return aux.isPresent();
@@ -40,10 +40,10 @@ public class ClienteValidator {
         return !id.equals(aux.get().getId()) && aux.isPresent();
     }
 
-    private Boolean existsByNomeCompletoAndCpf(Cliente entity, Long id) {
-        Optional<Cliente> aux = repository.findByNomeCompletoAndCpfAndEmpresa(
-                entity.getNomeCompleto(),
-                entity.getCpf(),
+    private Boolean existsByNomeRazaoAndCpfCnpj(Cliente entity, Long id) {
+        Optional<Cliente> aux = repository.findByNomeRazaoAndCpfCnpjAndEmpresa(
+                entity.getNomeRazao(),
+                entity.getCpfCnpj(),
                 entity.getEmpresa());
 
         if (id == null) {
@@ -54,11 +54,11 @@ public class ClienteValidator {
     }
 
     public void updateData(Cliente newEntity, Cliente currentEntity) {
-        currentEntity.setNomeCompleto(newEntity.getNomeCompleto());
-        currentEntity.setCpf(newEntity.getCpf());
-        currentEntity.setDataNascimento(newEntity.getDataNascimento());
+        currentEntity.setNomeRazao(newEntity.getNomeRazao());
+        currentEntity.setCpfCnpj(newEntity.getCpfCnpj());
+        currentEntity.setDataNascimentoCriacao(newEntity.getDataNascimentoCriacao());
         currentEntity.setUsuarioAtualizacao(newEntity.getUsuarioAtualizacao());
-
+        currentEntity.setFornecedor(newEntity.getFornecedor());
     }
 
     public void validateCanDelete(Cliente cliente) {

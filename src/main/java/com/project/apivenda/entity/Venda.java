@@ -32,6 +32,7 @@ public class Venda implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     @OneToMany(mappedBy = "venda",  fetch = FetchType.LAZY,  cascade = CascadeType.ALL)

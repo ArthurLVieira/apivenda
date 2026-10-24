@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -14,14 +15,29 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("""
         select c from Cliente c
         where c.empresa = :empresa
-        and (c.nomeCompleto ILIKE CONCAT('%', :search, '%')
-        or c.cpf ILIKE CONCAT('%', :search, '%'))
+        and (c.nomeRazao ILIKE CONCAT('%', :search, '%')
+        or c.cpfCnpj ILIKE CONCAT('%', :search, '%'))
+        and c.fornecedor = :fornecedor
     """)
-    Page<Cliente> search(String search, Empresa empresa, Pageable pageable);
+    Page<Cliente> search(
+            @Param("search") String search,
+            @Param("empresa") Empresa empresa,
+            @Param("fornecedor") Boolean fornecedor,
+            Pageable pageable
+    );
 
-    Page<Cliente> findAllByEmpresa(Empresa empresa, Pageable pageable);
+    @Query("""
+        select c from Cliente c
+        where c.empresa = :empresa
+        and c.fornecedor = :fornecedor
+    """)
+    Page<Cliente> findAllByEmpresa(
+            Empresa empresa,
+            @Param("fornecedor") Boolean fornecedor,
+            Pageable pageable
+    );
 
-    Optional<Cliente> findByNomeCompletoAndCpfAndEmpresa(String nomeCompleto, String cpf, Empresa empresa);
+    Optional<Cliente> findByNomeRazaoAndCpfCnpjAndEmpresa(String nomeRazao, String cpfCnpj, Empresa empresa);
 
-    Optional<Cliente> findByCpfAndEmpresa(String cpf, Empresa empresa);
+    Optional<Cliente> findByCpfCnpjAndEmpresa(String cpfCnpj, Empresa empresa);
 }

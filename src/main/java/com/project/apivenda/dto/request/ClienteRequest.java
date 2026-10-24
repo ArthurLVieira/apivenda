@@ -10,9 +10,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClienteRequest {
-    @NotNull(message = "Nome do cliente obrigatório")
-    private String nomeCompleto;
-    @NotNull(message = "CPF do cliente obrigatório")
-    private String cpf;
-    private LocalDate dataNascimento;
+    @NotNull(message = "Nome/Razão do cliente obrigatório")
+    private String nomeRazao;
+    @NotNull(message = "CPF/CNPJ do cliente obrigatório")
+    private String cpfCnpj;
+    private String nomeFantazia;
+    private LocalDate dataNascimentoCriacao;
+    private Boolean fornecedor = false;
+    private boolean status = true;
 }

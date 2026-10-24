@@ -15,8 +15,8 @@ public interface EntradaRepository extends JpaRepository<Entrada,Long> {
         left join e.fornecedor f
         where e.empresa = :empresa
         and (concat(e.numero , '') ilike concat('%', :search, '%')
-        or lower(f.nomeCompleto) ilike concat('%', :search, '%')
-        or f.cpf ILIKE CONCAT('%', :search, '%'))
+        or lower(f.nomeRazao) ilike concat('%', :search, '%')
+        or f.cpfCnpj ILIKE CONCAT('%', :search, '%'))
     """)
     Page<Entrada> search(
             @Param("search") String search,
