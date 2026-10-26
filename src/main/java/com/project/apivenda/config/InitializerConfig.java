@@ -21,9 +21,7 @@ import org.springframework.stereotype.Component;
 public class InitializerConfig implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
-    private final StatusVendaRepository statusVendaRepository;
     private final StatusVendaValidator statusVendaValidator;
-    private final StatusEntradaRepository statusEntradaRepository;
     private final StatusEntradaValidator statusEntradaValidator;
 
     @Override
@@ -41,19 +39,10 @@ public class InitializerConfig implements CommandLineRunner {
     }
 
     private void initializeStatusVenda() {
-        if  (statusVendaRepository.count() != 0) {return;}
-
-        statusVendaRepository.save(statusVendaValidator.validateInitializerEntityByStatus(StatusVendaEnum.ABERTA));
-        statusVendaRepository.save(statusVendaValidator.validateInitializerEntityByStatus(StatusVendaEnum.FATURADA));
-        statusVendaRepository.save(statusVendaValidator.validateInitializerEntityByStatus(StatusVendaEnum.CANCELADA));
+        statusVendaValidator.validateInitializerEntityByStatus();
     }
 
     private void initializeStatusEntrada() {
-        if  (statusEntradaRepository.count() != 0) {return;}
-
-        statusEntradaRepository.save(statusEntradaValidator.validateInitializerEntityByStatus(StatusEntradaEnum.AUTORIZADA));
-        statusEntradaRepository.save(statusEntradaValidator.validateInitializerEntityByStatus(StatusEntradaEnum.CANCELADA));
-        statusEntradaRepository.save(statusEntradaValidator.validateInitializerEntityByStatus(StatusEntradaEnum.PENDENTE));
-
+        statusEntradaValidator.validateInitializerEntityByStatus();
     }
 }

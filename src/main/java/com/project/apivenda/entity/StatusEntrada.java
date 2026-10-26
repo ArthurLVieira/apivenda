@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "status_venda", schema = "public")
+@Table(name = "status_entrada", schema = "public")
 public class StatusEntrada implements Serializable {
 
     @Serial
