@@ -8,15 +8,22 @@ import com.project.apivenda.repository.StatusEntradaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Optional;
+
 @Configuration
 @RequiredArgsConstructor
 public class StatusEntradaValidator {
 
     private final StatusEntradaRepository statusEntradaRepository;
 
-    public StatusEntrada validateInitializerEntityByStatus(StatusEntradaEnum status) {
-        return  statusEntradaRepository.findByStatus(status)
-                .orElse(statusEntradaRepository.save(new StatusEntrada(status)));
+    public void validateInitializerEntityByStatus() {
+        for (StatusEntradaEnum statusEntrada : StatusEntradaEnum.values()) {
+            Optional<StatusEntrada> entity = statusEntradaRepository.findByStatus(statusEntrada);
+
+            if (entity.isEmpty()) {
+                statusEntradaRepository.save(new StatusEntrada(statusEntrada));
+            }
+        }
     }
 
     public StatusEntrada validateEntityByStatus(StatusEntradaEnum status) {

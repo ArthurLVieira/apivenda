@@ -8,14 +8,23 @@ import com.project.apivenda.repository.StatusVendaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class StatusVendaValidator {
     private final StatusVendaRepository statusVendaRepository;
 
-    public StatusVenda validateInitializerEntityByStatus(StatusVendaEnum status) {
-        return statusVendaRepository.findByStatus(status)
-                .orElse(statusVendaRepository.save(new StatusVenda(status)));
+    public void validateInitializerEntityByStatus() {
+        for (StatusVendaEnum statusVenda : StatusVendaEnum.values()) {
+            Optional<StatusVenda> entity = statusVendaRepository.findByStatus(statusVenda);
+
+            if (entity.isEmpty()) {
+                statusVendaRepository.save(new StatusVenda(statusVenda));
+            }
+        }
+
+
     }
 
     public StatusVenda validateEntityByStatus(StatusVendaEnum status) {
