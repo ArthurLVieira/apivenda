@@ -29,6 +29,7 @@ public class EntradaService {
     private final EntradaMapper mapper;
     private final UsuarioRepository usuarioRepository;
     private final ClienteService clienteService;
+    private final ProdutoService produtoService;
 
     private Usuario getUsuario() {
         String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
@@ -82,6 +83,9 @@ public class EntradaService {
             item.setEmpresa(getEmpresa());
             item.setUsuarioCadastro(getUsuario());
             item.setUsuarioAtualizacao(getUsuario());
+            item.setProduto(produtoService.insertOrUpdate(
+
+            ));
         });
 
         entity = entradaRepository.save(entity);
